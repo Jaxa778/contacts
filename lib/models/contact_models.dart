@@ -17,4 +17,16 @@ class ContactModels {
   Map<String, dynamic> toJson() {
     return {"id": id, "full_name": fullName, "phone_number": phoneNumber};
   }
+
+  ContactModels copyWith({
+    int? newId,
+    String? newFullName,
+    String? newPhoneNumber,
+  }) {
+    return ContactModels(
+      id: newId ?? id,
+      fullName: newFullName ?? fullName,
+      phoneNumber: newPhoneNumber ?? phoneNumber,
+    );
+  }
 }

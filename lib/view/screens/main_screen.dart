@@ -56,6 +56,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
+  void dispose() {
+    fullNameController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,6 +71,8 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
             onPressed: () async {
+              fullNameController.clear();
+              phoneNumberController.clear();
               return showDialog(
                 context: context,
                 builder: (context) {
@@ -112,6 +121,7 @@ class _MainScreenState extends State<MainScreen> {
           return ListTile(
             leading: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(contact.fullName, style: TextStyle(fontSize: 18)),
                 Text(contact.phoneNumber, style: TextStyle(fontSize: 14)),
@@ -120,12 +130,16 @@ class _MainScreenState extends State<MainScreen> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(onPressed: () {
+                IconButton(
+                  onPressed: () {
+                    fullNameController.text = contact.fullName;
+                    phoneNumberController.text = contact.phoneNumber;
+
                     showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Yangi kontakt qo‘shish'),
+                          title: const Text('Kontaktni tahrirlash'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -150,14 +164,18 @@ class _MainScreenState extends State<MainScreen> {
                               child: const Text('Bekor qilish'),
                             ),
                             ElevatedButton(
-                              onPressed: (){},
-                              child: const Text('Qo‘shish'),
+                              onPressed: () {
+                                _editContacts(contact.id!);
+                              },
+                              child: const Text('Tahrirlash'),
                             ),
                           ],
                         );
                       },
                     );
-                  }, icon: Icon(Icons.edit)),
+                  },
+                  icon: Icon(Icons.edit),
+                ),
                 IconButton(
                   onPressed: () => _deleteContacts(contact.id!),
                   icon: Icon(Icons.delete),
